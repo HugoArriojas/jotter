@@ -1,10 +1,14 @@
 // back end framerwork
 const express = require('express');
+const colors = require('colors');
 // Allows us to have .env file with vars in it
 const dotenv = require('dotenv').config();
 const { errorHandler } = require('./middleware/errorMiddleware');
+const connectDB = require('./config/db');
 // specify port where server is running
 const port = process.env.PORT || 5000;
+
+connectDB();
 
 const app = express();
 
