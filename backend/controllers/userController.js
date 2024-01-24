@@ -45,14 +45,14 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc     Authenticate user
-// @route    POST /api/users/login
-// @access   Private
+// @desc    Authenticate user
+// @route   POST /api/users/login
+// @access   Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   // Check for user email
-  const user = await User.finOne({ emaail });
+  const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
@@ -67,28 +67,18 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc     Get user data
-// @route    GET /api/users/me
-// @access   Private
+// @desc    Get user data
+// @route   GET /api/users/me
+// @access  Private
 const getMe = asyncHandler(async (req, res) => {
-  const { _id, name, email } = await User.findById(req.user, id);
-
-  req.status(200).json({
-    id: _id,
-    name,
-    email,
-  });
+  res.status(200).json(req.user);
 });
 
 // Generate JWT
 const generateToken = (id) => {
-  return (
-    jwt.sign({ id }),
-    process.env.JWT_SECRET,
-    {
-      expiresIn: '30d',
-    }
-  );
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
 };
 
 module.exports = {

@@ -9,7 +9,7 @@ const connectDB = async () => {
     // using colors package to style this message
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
   } catch (error) {
-    console.log('error:', error);
+    console.log('Error:', error);
     process.exit(1);
   }
 };
