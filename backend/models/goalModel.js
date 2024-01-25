@@ -5,7 +5,7 @@ const goalSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, 'User is requred to make goals'],
+      required: true,
       ref: 'User',
     },
     text: {
