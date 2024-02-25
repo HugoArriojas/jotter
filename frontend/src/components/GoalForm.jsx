@@ -7,8 +7,8 @@ function GoalForm() {
 
   const dispatch = useDispatch();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (event) => {
+    event.preventDefault();
 
     dispatch(setGoal({ text }));
     setText('');
@@ -24,7 +24,7 @@ function GoalForm() {
             name='text'
             id='text'
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(event) => setText(event.target.value)}
           />
         </div>
         <div className='form-group'>
