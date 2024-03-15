@@ -1,7 +1,7 @@
 {
-  "name": "goal-tracker",
+  "name": "jotter",
   "version": "1.0.0",
-  "description": "Goal tracker MERN app",
+  "description": "Journal MERN app",
   "main": "index.js",
   "scripts": {
     "start": "node backend/server.js",
