@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import goalService from './goalService';
+import journalService from './journalService';
 
 const initialState = {
-  goals: [],
+  journalEntries: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
 };
 
-// Get user goals
-export const getGoals = createAsyncThunk(
-  'goals/getAll',
+// Get user journal entries
+export const getEntries = createAsyncThunk(
+  'journals/getAll',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.getGoals(token);
+      return await journalService.getEntries(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -28,13 +28,13 @@ export const getGoals = createAsyncThunk(
   }
 );
 
-// Set user goal
-export const setGoal = createAsyncThunk(
-  'goals/create',
-  async (goalData, thunkAPI) => {
+// Set user journal entry
+export const setEntry = createAsyncThunk(
+  'journals/create',
+  async (journalData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.setGoal(goalData, token);
+      return await journalService.setEntry(journalData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -47,13 +47,13 @@ export const setGoal = createAsyncThunk(
   }
 );
 
-// Update user goal
-export const deleteGoal = createAsyncThunk(
-  'goals/delete',
-  async (goalData, thunkAPI) => {
+// Delete journal entry
+export const deleteEntry = createAsyncThunk(
+  'journals/delete',
+  async (journalData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.deleteGoal(goalData, token);
+      return await journalService.deleteEntry(journalData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -66,51 +66,51 @@ export const deleteGoal = createAsyncThunk(
   }
 );
 
-export const goalSlice = createSlice({
-  name: 'goal',
+export const journalSlice = createSlice({
+  name: 'journals',
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(setGoal.pending, (state) => {
+      .addCase(setEntry.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(setGoal.fulfilled, (state, action) => {
+      .addCase(setEntry.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals.push(action.payload);
+        state.journalEntries.push(action.payload);
       })
-      .addCase(setGoal.rejected, (state, action) => {
+      .addCase(setEntry.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(getGoals.pending, (state) => {
+      .addCase(getEntries.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getGoals.fulfilled, (state, action) => {
+      .addCase(getEntries.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = action.payload;
+        state.journalEntries = action.payload;
       })
-      .addCase(getGoals.rejected, (state, action) => {
+      .addCase(getEntries.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteGoal.pending, (state) => {
+      .addCase(deleteEntry.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteGoal.fulfilled, (state, action) => {
+      .addCase(deleteEntry.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload.id
+        state.journalEntries = state.journalEntries.filter(
+          (entry) => entry._id !== action.payload.id
         );
       })
-      .addCase(deleteGoal.rejected, (state, action) => {
+      .addCase(deleteEntry.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -118,5 +118,5 @@ export const goalSlice = createSlice({
   },
 });
 
-export const { reset } = goalSlice.actions;
-export default goalSlice.reducer;
+export const { reset } = journalSlice.actions;
+export default journalSlice.reducer;
