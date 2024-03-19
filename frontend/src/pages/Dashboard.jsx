@@ -24,9 +24,9 @@ function Dashboard() {
 
     if (!user) {
       navigate('/login');
+    } else {
+      dispatch(getEntries());
     }
-
-    dispatch(getEntries());
 
     return () => {
       dispatch(reset());
