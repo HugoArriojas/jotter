@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import GoalForm from '../components/GoalForm';
-import GoalItem from '../components/GoalItem';
+import JournalForm from '../components/JournalForm';
+import JournalEntry from '../components/JournalEntry';
 import Spinner from '../components/Spinner';
-import { getGoals, reset } from '../features/goals/goalSlice';
+import { getEntries, reset } from '../features/journal/journalSlice';
 
 function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { goals, isLoading, isError, message } = useSelector(
-    (state) => state.goals
+  const { journalEntries, isLoading, isError, message } = useSelector(
+    (state) => {
+      return state.journal;
+    }
   );
 
   useEffect(() => {
@@ -22,9 +24,9 @@ function Dashboard() {
 
     if (!user) {
       navigate('/login');
+    } else {
+      dispatch(getEntries());
     }
-
-    dispatch(getGoals());
 
     return () => {
       dispatch(reset());
@@ -39,23 +41,23 @@ function Dashboard() {
     <>
       <section className='heading'>
         <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dashboard</p>
+        <p>Journal Dashboard</p>
       </section>
 
-      <GoalForm />
+      <JournalForm />
 
       <section className='content'>
-        {goals.length > 0 ? (
-          <div className='goals'>
-            {goals.map((goal) => (
-              <GoalItem
-                key={goal._id}
-                goal={goal}
+        {journalEntries.length > 0 ? (
+          <div className='entries'>
+            {journalEntries.map((entry) => (
+              <JournalEntry
+                key={entry._id}
+                entry={entry}
               />
             ))}
           </div>
         ) : (
-          <h3>You have not set any goals</h3>
+          <h3>You have not written any entries</h3>
         )}
       </section>
     </>

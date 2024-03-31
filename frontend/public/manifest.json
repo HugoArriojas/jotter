@@ -1,6 +1,6 @@
 {
-  "short_name": "Goal Tracker",
-  "name": "Goal tracking application with user verification",
+  "short_name": "Jotter",
+  "name": "Journalling application with user verification",
   "icons": [
     {
       "src": "favicon.ico",
