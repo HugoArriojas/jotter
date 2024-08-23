@@ -26,9 +26,25 @@ function JournalForm() {
       prompts: ['prompt1', 'prompt2', 'prompt3', 'prompt4', 'prompt5'],
       field: <PromptSelect />,
     },
+    // 🐞🐞🐞🐞🐞🐞🐞 I want to figure out how to make below work
     {
       label: 'Write my own prompt',
       prompts: [],
+      // field: (
+      //   <div className='form-group'>
+      //     <label htmlFor='prompt'>prompt</label>
+      //     <input
+      //       type='prompt'
+      //       name='prompt'
+      //       id='prompt'
+      //       value={prompt}
+      //       onChange={(event) => {
+      //         setPrompt(event.target.value);
+      //         console.log(prompt);
+      //       }}
+      //     />
+      //   </div>
+      // ),
     },
   ]);
 
@@ -63,6 +79,7 @@ function JournalForm() {
           return (
             <button
               key={itemIndex}
+              // onClick={() => setIndex(itemIndex)}
               onClick={(event) => handlePromptSelection(event)}
             >
               {item.label}
@@ -73,12 +90,32 @@ function JournalForm() {
     );
   }
 
+  //🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞 THIS COULD BE BETTER HANDLED BY A SETPROMPT FUNCTION
+  // function SelectedPromptOption() {
+  //   if (buttonsAndPrompts[index]?.prompts.length) {
+  //     return <PromptSelect />;
+  //   } else {
+  //     return (
+  //       <div className='form-group'>
+  //         <label htmlFor='prompt'>prompt</label>
+  //         <input
+  //           type='prompt'
+  //           name='prompt'
+  //           id='prompt'
+  //           value={prompt}
+  //           onChange={(event) => setPrompt(event.target.value)}
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
 
   return (
     <section className='form'>
       <ToggleButtons />
       <form onSubmit={onSubmit}>
         <div className='form-group'>
+          {/* <SelectedPromptOption /> */}
           <label htmlFor='headline'>headline</label>
           <input
             type='headline'
@@ -88,6 +125,7 @@ function JournalForm() {
             onChange={(event) => setHeadline(event.target.value)}
           />
         </div>
+        {/* 🐞🐞🐞🐞🐞🐞🐞 This is hacky */}
         {selectedPrompt && selectedPrompt.field ? (
           selectedPrompt && selectedPrompt.field
         ) : (
