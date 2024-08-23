@@ -20,8 +20,63 @@ function JournalForm() {
     setText('');
   };
 
+  const [buttonsAndPrompts] = useState([
+    {
+      label: 'Choose a prompt',
+      prompts: ['prompt1', 'prompt2', 'prompt3', 'prompt4', 'prompt5'],
+      field: <PromptSelect />,
+    },
+    {
+      label: 'Write my own prompt',
+      prompts: [],
+    },
+  ]);
+
+  const [selectedPrompt, setSelectedPrompt] = useState(buttonsAndPrompts[0]);
+
+  const handlePromptSelection = (event) => {
+    const promptOption = buttonsAndPrompts.find(
+      (promptOption) => promptOption.label === event.target.textContent
+    );
+    if (promptOption) {
+      setSelectedPrompt(promptOption);
+    }
+  };
+
+  function PromptSelect() {
+    return (
+      <div>
+        <select>
+          {selectedPrompt.prompts.map((prompt, index) => (
+            <option key={index}>{prompt}</option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  // Choose Prompt Buttons
+  function ToggleButtons() {
+    return (
+      <div>
+        {buttonsAndPrompts.map((item, itemIndex) => {
+          return (
+            <button
+              key={itemIndex}
+              onClick={(event) => handlePromptSelection(event)}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
+
   return (
     <section className='form'>
+      <ToggleButtons />
       <form onSubmit={onSubmit}>
         <div className='form-group'>
           <label htmlFor='headline'>headline</label>
@@ -33,16 +88,20 @@ function JournalForm() {
             onChange={(event) => setHeadline(event.target.value)}
           />
         </div>
-        <div className='form-group'>
-          <label htmlFor='prompt'>prompt</label>
-          <input
-            type='prompt'
-            name='prompt'
-            id='prompt'
-            value={prompt}
-            onChange={(event) => setPrompt(event.target.value)}
-          />
-        </div>
+        {selectedPrompt && selectedPrompt.field ? (
+          selectedPrompt && selectedPrompt.field
+        ) : (
+          <div className='form-group'>
+            <label htmlFor='prompt'>prompt</label>
+            <input
+              type='prompt'
+              name='prompt'
+              id='prompt'
+              value={prompt}
+              onChange={(event) => setPrompt(event.target.value)}
+            />
+          </div>
+        )}
         <div className='form-group'>
           <label htmlFor='promptResponse'>promptResponse</label>
           <input
