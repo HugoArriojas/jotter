@@ -13,20 +13,17 @@ function JournalForm() {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(setEntry({ headline, prompt, promptResponse, text }));
-    setHeadline('');
-    setPrompt('');
-    setPromptResponse('');
-    setText('');
+    if (headline && prompt && promptResponse && text) {
+      dispatch(setEntry({ headline, prompt, promptResponse, text }));
+      setHeadline('');
+      setPrompt('');
+      setPromptResponse('');
+      setText('');
+    }
   };
 
   const [buttonsAndPrompts] = useState([
-    {
-      label: 'Choose a prompt',
-      prompts: ['prompt1', 'prompt2', 'prompt3', 'prompt4', 'prompt5'],
-      field: <PromptSelect />,
-    },
-    // 🐞🐞🐞🐞🐞🐞🐞 I want to figure out how to make below work
+    // 🐞🐞 I want to figure out how to make below work but it is rendered statically due to the array, might need to go into a component
     {
       label: 'Write my own prompt',
       prompts: [],
@@ -46,6 +43,11 @@ function JournalForm() {
       //   </div>
       // ),
     },
+    {
+      label: 'Choose a prompt',
+      prompts: ['prompt1', 'prompt2', 'prompt3', 'prompt4', 'prompt5'],
+      field: <PromptSelect />,
+    },
   ]);
 
   const [selectedPrompt, setSelectedPrompt] = useState(buttonsAndPrompts[0]);
@@ -55,14 +57,28 @@ function JournalForm() {
       (promptOption) => promptOption.label === event.target.textContent
     );
     if (promptOption) {
+      promptOption.prompts.length
+        ? setPrompt(promptOption.prompts[0])
+        : setPrompt('');
       setSelectedPrompt(promptOption);
     }
   };
 
+  // dropdown
   function PromptSelect() {
     return (
-      <div>
-        <select>
+      <div className='form-group'>
+        <label htmlFor='prompt'>prompt</label>
+        <select
+          className='btn-reverse btn-block select'
+          onChange={(event) => {
+            setPrompt(event.target.value);
+          }}
+          name='prompt'
+          type='prompt'
+          id='prompt'
+          value={prompt}
+        >
           {selectedPrompt.prompts.map((prompt, index) => (
             <option key={index}>{prompt}</option>
           ))}
@@ -74,12 +90,17 @@ function JournalForm() {
   // Choose Prompt Buttons
   function ToggleButtons() {
     return (
-      <div>
+      <div className='toggle-buttons'>
         {buttonsAndPrompts.map((item, itemIndex) => {
           return (
             <button
+              className={`
+                btn btn-reverse btn-toggle ${
+                  item.label === selectedPrompt.label
+                    ? 'btn-toggled disabled'
+                    : ''
+                }`}
               key={itemIndex}
-              // onClick={() => setIndex(itemIndex)}
               onClick={(event) => handlePromptSelection(event)}
             >
               {item.label}
@@ -90,29 +111,8 @@ function JournalForm() {
     );
   }
 
-  //🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞🐞 THIS COULD BE BETTER HANDLED BY A SETPROMPT FUNCTION
-  // function SelectedPromptOption() {
-  //   if (buttonsAndPrompts[index]?.prompts.length) {
-  //     return <PromptSelect />;
-  //   } else {
-  //     return (
-  //       <div className='form-group'>
-  //         <label htmlFor='prompt'>prompt</label>
-  //         <input
-  //           type='prompt'
-  //           name='prompt'
-  //           id='prompt'
-  //           value={prompt}
-  //           onChange={(event) => setPrompt(event.target.value)}
-  //         />
-  //       </div>
-  //     );
-  //   }
-  // }
-
   return (
     <section className='form'>
-      <ToggleButtons />
       <form onSubmit={onSubmit}>
         <div className='form-group'>
           {/* <SelectedPromptOption /> */}
@@ -125,9 +125,9 @@ function JournalForm() {
             onChange={(event) => setHeadline(event.target.value)}
           />
         </div>
-        {/* 🐞🐞🐞🐞🐞🐞🐞 This is hacky */}
+        <ToggleButtons />
         {selectedPrompt && selectedPrompt.field ? (
-          selectedPrompt && selectedPrompt.field
+          <PromptSelect />
         ) : (
           <div className='form-group'>
             <label htmlFor='prompt'>prompt</label>
@@ -141,7 +141,7 @@ function JournalForm() {
           </div>
         )}
         <div className='form-group'>
-          <label htmlFor='promptResponse'>promptResponse</label>
+          <label htmlFor='promptResponse'>response</label>
           <input
             type='promptResponse'
             name='promptResponse'
