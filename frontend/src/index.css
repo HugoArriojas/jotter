@@ -9,6 +9,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   padding-bottom: 50px;
+  background-color: beige;
 }
 
 a {
@@ -83,12 +84,13 @@ h3 {
 }
 
 .heading p {
-  color: #828282;
+  color: #464646;
 }
 
 .entry {
   width: 100%;
-  background-color: #f4f4f4;
+  background-color: beige;
+  border: 1px solid black;
   margin: 10px 0;
   padding: 20px 0 10px;
   position: relative;
@@ -118,10 +120,11 @@ h3 {
 .form-group select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #222;
   border-radius: 5px;
   margin-bottom: 10px;
   font-family: inherit;
+  background-color: beige;
 }
 
 .form-group label {
@@ -135,7 +138,7 @@ h3 {
   border: 1px solid #000;
   border-radius: 5px;
   background: #000;
-  color: #fff;
+  color: beige;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -146,13 +149,33 @@ h3 {
   justify-content: center;
 }
 
+.btn:hover:not(select#prompt) {
+  color: #000;
+  background: beige;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
 .btn svg {
   margin-right: 8px;
 }
 
 .btn-reverse {
-  background: #fff;
+  background: beige;
   color: #000;
+}
+
+.btn-reverse:hover:not(select#prompt) {
+  color: beige;
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .btn-block {
@@ -160,8 +183,28 @@ h3 {
   margin-bottom: 20px;
 }
 
-.btn:hover {
-  transform: scale(0.98);
+.toggle-buttons {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.toggle-buttons button {
+  margin: 0 20px;
+}
+
+.btn-toggled {
+  background-color: #555;
+  color: white;
+  cursor: not-allowed;
+}
+
+.select {
+  display: inline-block;
+  height: 43px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .loadingSpinnerContainer {
